@@ -1,0 +1,64 @@
+{% extends 'customers/base_temp.html' %}
+
+{% block content %}
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} register-alert">
+        {{ message }}
+        <button class="alert-close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+<div class="container con3 mt-4 p-4">
+    <div class="mb-5 adress-info-detailed">
+        {% if addressvalues %}
+            <h5>Address Information: <span>
+                {{addressvalues.address_details}}
+            </span></h5>
+            <h5>City/Region: <span>{{ addressvalues.city }}</span></h5>
+            <h5>State: <span>{{ addressvalues.state }}</span> </h5>
+            <h5>Phone Number 1: <span>{{ addressvalues.phone1 }}</span> </h5>
+            <h5>Phone Number 2: <span>{{ addressvalues.phone2 }}</span> </h5>
+            <h5>Name of Receiver: <span>{{ addressvalues.receiverName }}</span> </h5>
+        
+        <a class="update-link" href="{% url 'update-address-info' user.pk%}">Update Address Table</a>
+    </div>
+    {% else %}
+    <!-- <hr> -->
+    <h3 class="">Order Address</h3>
+        <form action="{% url 'address-validation' user.pk %}" class="mt-5" method="POST">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="address">Address Information</label>
+                <textarea name="addressdetails" id="address" cols="30" rows="5" class="form-control" required></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label for="">City/Region</label>
+                <input type="text" class="form-control" name="city" required value="{{ addressvalues.city }}">
+            </div>
+            <div class="form-group mb-3">
+                <label for="">State</label>
+                <input type="text" class="form-control" name="state" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="">Phone Number 1</label>
+                <input type="tel" class="form-control" pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{4}[0-9]{4}" name="phone1" placeholder="08011112222" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="">Phone Number 2</label>
+                <input type="tel" class="form-control" pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{4}[0-9]{4}" name="phone2" placeholder="08011112222">
+            </div>
+            <div class="form-group mb-3">
+                <label for="">Name of Receiver</label>
+                <input type="text" class="form-control" name="receivername" required>
+            </div>
+            <button class="btn change-img-submit" type="submit">SUBMIT</button>
+        </form>
+    </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'customers/base_temp.html' %}
+{% load humanize %}
+{% block content %}
+<div class="container con6 mt-4">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} register-alert">
+        {{ message }}
+        <button class="alert-close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% if product_queryset %}
+
+            <h2 class="mb-3">{{ product_queryset.product_name }}</h2>
+            <div class="slider col-md-12 overflow-hidden">
+                <div class="row gx-3 gy-3">
+                        <div class="col-md-4 col-sm-6">
+                            <img class="slider-img" src="{{ product_queryset.product_image1.url }}" alt="Image of ">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <img class="slider-img" src="{{ product_queryset.product_image2.url }}" alt="Image of ">
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <img class="slider-img" src="{{ product_queryset.product_image2.url }}" alt="Image of ">
+                        </div>
+                </div>
+            </div>
+            <h5 class="mt-4 ms-3">Product Information</h5>
+            <div class="col-md-12 mt-4 product-info p-4">
+                <div class="col-md-12 prod-info-area">
+                    <p>{{ product_queryset.product_description }}</p>
+                </div>
+                <h6 class="mt-4 prod-price">Price: ${{ product_queryset.product_price|intcomma }}</h6>
+                
+                <form action="{% url 'prod-add' product_queryset.id  %}" method="POST" class="d-flex flex-column">
+                    {% csrf_token %}
+                    <input type="number" min="1" name = 'order-number' value="1" class="ord-num" max="10" required>
+                    <button data-product="{{product_queryset.id}}" data-action="add" class="btn cart-button  mt-4 update-cart" type="submit" onclick="ActionPerformed(this);">Add to cart</button>
+                </form>
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

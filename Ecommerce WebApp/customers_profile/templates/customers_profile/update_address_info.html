@@ -1,0 +1,35 @@
+{% extends 'customers/base_temp.html' %}
+{% block content %}
+<div class="container con3">
+    <h2 class="">UPDATE ADDRESS TABLE</h2>
+        <form action="{% url 'update-address-validation' user.pk %}" class="mt-4" method="POST">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="address">Address Information</label>
+                <input name="addressdetails" id="address" class="form-control" required value="{{ addressdetails.address_details }}">
+            </div>
+            <div class="form-group mb-3">
+                <label for="">City/Region</label>
+                <input type="text" class="form-control" name="city" required value="{{addressdetails.city}}">
+            </div>
+            <div class="form-group mb-3">
+                <label for="">State</label>
+                <input type="text" class="form-control" name="state" required value="{{addressdetails.state}}">
+            </div>
+            <div class="form-group mb-3">
+                <label for="">Phone Number 1</label>
+                <input type="tel" class="form-control" pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{4}[0-9]{4}" name="phone1" placeholder="08011112222" required value="{{ addressdetails.phone1 }}">
+            </div>
+            <div class="form-group mb-3">
+                <label for="">Phone Number 2</label>
+                <input type="tel" class="form-control" pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{4}[0-9]{4}" name="phone2" placeholder="08011112222" value="{{ addressdetails.phone2 }}">
+            </div>
+            <div class="form-group mb-3">
+                <label for="">Name of Receiver</label>
+                <input type="text" class="form-control" name="receivername" required value="{{ addressdetails.receiverName }}">
+            </div>
+            <button class="btn change-img-submit" type="submit">SUBMIT</button>
+        </form>
+</div>
+
+{% endblock %}

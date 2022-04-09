@@ -1,0 +1,147 @@
+{% extends 'customers/base_temp.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+    <div class="container search-container p-md-0 mb-5">
+
+        <form action="{% url 'search-product' %}" method="POST" class="col-md-12 d-flex mb-3">
+            {% csrf_token %}
+            <input type="text" name="search-value" placeholder="Search Here" class="form-control me-3">
+            <button type="submit" class="btn search-btn">Search</button>
+        </form>
+
+        <form action="{% url 'search-category' %}" method="POST">
+            {% csrf_token %}
+            <select name="category-value" id="" class="form-control" onchange="this.form.submit()">
+                <option disabled selected>Our Categories</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Computing">Computing</option>
+                <option value="PhonesNTablets">Phones & Tablets</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Sporting">Sporting</option>
+            </select>
+        </form>
+    </div>
+
+    <div class="container con5 col-md-12 overflow-hidden">
+        <h2 class="ps-2">FLASH SALES</h2>
+
+        <div class="row gx-1 gy-3">
+
+        {% if product_obj %}
+            {% for product in product_obj %}
+
+            <div class="productCard col-lg-3 col-sm-6">
+                <div class="image-holder">
+                    <a href="{% url 'products-details' product.id %}" >
+                        <img src="{{ product.product_image1.url }}" alt="Image of {{ product.product_name }}">
+                    </a>
+                </div>
+                <div class="card-content">
+                    <h5>{{ product.product_name }}</h5>
+                    <p class="prod-price">${{ product.product_price|intcomma }}</p>
+                </div>
+            </div>
+
+            {% endfor %}
+        {% endif %}
+            <!-- <div class="productCard col-lg-3 col-sm-6">
+                <div class="image-holder">
+                    
+                </div>
+                <div class="card-content">
+                    <h5>dsujfb</h5>
+                    <p class="prod-price">$12000</p>
+                </div>
+            </div>
+
+            <div class="productCard col-lg-3 col-sm-6">
+                <div class="image-holder">
+                    
+                </div>
+                <div class="card-content">
+                    <h5>dsujfb</h5>
+                    <p class="prod-price">$12000</p>
+                </div>
+            </div>
+
+            <div class="productCard col-lg-3 col-sm-6">
+                <div class="image-holder">
+                    
+                </div>
+                <div class="card-content">
+                    <h5>dsujfb</h5>
+                    <p class="prod-price">$12000</p>
+                </div>
+            </div>
+
+            <div class="productCard col-lg-3 col-sm-6">
+                <div class="image-holder">
+                    
+                </div>
+                <div class="card-content">
+                    <h5>dsujfb</h5>
+                    <p class="prod-price">$12000</p>
+                </div>
+            </div>
+
+            <div class="productCard col-lg-3 col-sm-6">
+                <div class="image-holder">
+                    
+                </div>
+                <div class="card-content">
+                    <h5>dsujfb</h5>
+                    <p class="prod-price">$12000</p>
+                </div>
+            </div> -->
+
+        </div>
+    </div>
+
+    <div class="container con5 col-md-12 overflow-hidden mt-5">
+        <h2 class="ps-2">TOP DISCOUNTS</h2>
+        <div class="row row gx-1 gy-3">
+            {%if top_sales%}
+                {% for product in top_sales %}
+
+                    <div class="productCard col-lg-3 col-sm-6">
+                        <div class="image-holder">
+                            <a href="#" >
+                                <img src="{{ product.product_image1.url }}" alt="Image of {{ product.product_name }}">
+                            </a>
+                        </div>
+                        <div class="card-content">
+                            <h5>{{ product.product_name }}</h5>
+                            <p class="prod-price">${{ product.product_price|intcomma }}</p>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <footer class="container-fluid text-center">
+        <h2>Thank you for using our website</h2>
+        <h5>Contact us on our social media handles:</h5>
+        <div>
+            <i class="fa fa-facebook"></i>
+            <a href="#">the.coded.coder</a>
+        </div>
+        <div>
+            <i class="fa fa-twitter-square"></i>
+            <a href="#">the.coded.coder</a>
+        </div>
+        <div>
+            <i class="fa fa-instagram"></i>
+            <a href="#">the.coded.coder</a>
+        </div>
+        <div>
+            <i class="fa fa-youtube"></i>
+            <a href="#">the.coded.coder</a>
+        </div>
+
+    </footer>
+{% endblock %}

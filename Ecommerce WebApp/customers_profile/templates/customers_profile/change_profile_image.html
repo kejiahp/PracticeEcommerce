@@ -1,0 +1,33 @@
+{% extends 'customers/base_temp.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container con-2 p-4 mt-5 col-md-12">
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} register-alert">
+        {{ message }}
+        <button class="alert-close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <h1>Update profile image</h1>
+    <div class="d-flex align-items-center">
+        <h4>Current Image:</h4>
+        <img class="rounded-circle account-img ms-5" src="{{user.profile.profile_image.url}}" alt="{{ user.username }}'s Profile">
+    </div>
+    <div class="mt-3">
+        <h4><u>Change Image</u></h4>
+        <form action="{% url 'profile-update' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="get_profile_img" class="mt-4" accept="image/*">
+            <br>
+            <button type="submit" class="btn change-img-submit mt-4">CHANGE</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

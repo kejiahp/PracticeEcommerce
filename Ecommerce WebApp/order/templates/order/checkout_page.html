@@ -1,0 +1,87 @@
+{% extends 'customers/base_temp.html' %}
+{% load humanize %}
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} register-alert">
+            {{ message }}
+            <button class="alert-close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+    <div class="container col-md-12 d-md-flex ">
+        <div class="address-info col-md-6 p-3">
+            <h4 class="mb-3">Your Address Information</h4>
+            <form action="{% url 'update-address-validation' user.pk %}" method="post">
+                {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="address">Address Information</label>
+                <input name="addressdetails" id="address" class="form-control" required value="{{ addr.address_details }}">
+            </div>
+            <div class="d-md-flex justify-content-between">
+                <div class="form-group mb-3 col-md-6">
+                    <label for="">City/Region</label>
+                    <input type="text" class="form-control" name="city" required value="{{addr.city}}">
+                </div>
+                <div class="form-group mb-3 col-md-6">
+                    <label for="">State</label>
+                    <input type="text" class="form-control" name="state" required value="{{addr.state}}">
+                </div>
+            </div>
+
+            <div class="d-md-flex justify-content-between">
+                <div class="form-group mb-3 col-md-6">
+                    <label for="">Phone Number 1</label>
+                    <input type="tel" class="form-control" pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{4}[0-9]{4}" name="phone1" placeholder="08011112222" required value="{{ addr.phone1 }}">
+                </div>
+                <div class="form-group mb-3 col-md-6">
+                    <label for="">Phone Number 2</label>
+                    <input type="tel" class="form-control" pattern="[0]{1}[7-9]{1}[0-1]{1}[0-9]{4}[0-9]{4}" name="phone2" placeholder="08011112222" value="{{ addr.phone2 }}">
+                </div>
+            </div>
+
+            <div class="d-md-flex justify-content-between align-items-center">
+                <div class="form-group mb-4 col-md-6">
+                    <label for="">Name of Receiver</label>
+                    <input type="text" class="form-control" name="receivername" required value="{{ addr.receiverName }}">
+                </div>
+                <button class="btn change-img-submit col-md-6" type="submit">UPDATE</button>
+            </div>
+
+
+            </form>
+        </div>
+        <div class="orders col-md-6 p-3">
+            <h4 class="mb-3">Your Order Information</h4>
+            {% for item in items %}
+                <div class="product-tab col-md-12 d-flex mb-3">
+                    <div class="image-pro col-5 col-md-6">
+                        <img src="{{item.custProduct.product_image1.url}}" alt="">
+                    </div>
+
+                    <div class="texter p-3">
+                        <h5>{{ item.custProduct.product_name }}</h5>
+                        <p>Unit price: ${{ item.custProduct.product_price|intcomma }}</p>
+                        <p>Quantity: {{ item.quantity }}</p>
+                        <p>Total: ${{ item.total_product_price|intcomma }}</p>
+                        <a class="btn btn-outline-danger" href="{% url 'item-remove-checkout' item.id %}" data-action="remove"
+                        data-quantity="{{ item.quantity }}" data-product="{{item.custProduct.id}}" onclick="ActionPerformed(this);">REMOVE</a>
+                    </div>
+                </div>
+                {% endfor %}
+
+                {% if items %}
+                    <h2 class="mt-5">SUM TOTAL: ${{ order.total_checkout_price|intcomma }}</h2>
+                
+                
+                    <a class="btn change-img-submit mt-5 mb-4" href="{% url 'on-checkout' order.id %}" type="submit" onclick="ClearStorage();">ORDER</a>
+
+                    <a href="{% url 'email-sender' order.id %}">Email Sender</a>
+                    {% else %}
+                        <h1>THE CART IS EMPTY</h1>
+                {% endif %}
+        </div>
+    </div>
+{% endblock %}

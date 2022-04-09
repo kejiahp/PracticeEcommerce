@@ -1,0 +1,28 @@
+{% extends 'customers/base_temp.html' %}
+{% load humanize %}
+{% block content %}
+    <h4 class="text-center">Results for products with the category "{{word}}"</h4>
+    <hr>
+
+    <div class="container col-md-12 mt-4">
+        <div class="row gx-1 gy-3">
+            {% if result %}
+            {% for i in result %}
+                <div class="productCard col-lg-3 col-sm-6">
+                    <div class="image-holder">
+                        <a href="{% url 'products-details' i.id %}" >
+                            <img src="{{ i.product_image1.url }}" alt="Image of {{ i.product_name }}">
+                        </a>
+                    </div>
+                    <div class="card-content">
+                        <h5>{{ i.product_name }}</h5>
+                        <p class="prod-price">${{ i.product_price|intcomma }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            {% else %}
+                <h4 class="text-center">Sorry no items found for the search value "{{ word }}"</h4>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}
